@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CyberLens Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:monospace}
+body{background:#0a0a0f;color:#e0e0e0;display:flex;flex-direction:column;height:100vh}
+header{background:#111;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
+header h1{font-size:16px;color:#fff}
+header input{background:#1a1a2e;color:#fff;border:1px solid #333;padding:4px 8px;width:260px}
+main{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:12px;overflow:auto}
+.col{border:1px solid #333;border-radius:6px;padding:10px;background:#111118;overflow:auto}
+.col h2{font-size:13px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #333}
+.col.red h2{color:#ff5555}
+.col.blue h2{color:#55aaff}
+.col.purple h2{color:#b97bff}
+pre{white-space:pre-wrap;word-break:break-all;font-size:11px;line-height:1.4}
+#status{font-size:11px;color:#888}
+</style>
+</head>
+<body>
+<header>
+<h1>CyberLens — Dashboard</h1>
+<div>
+<input id="sid" placeholder="session_id (ej: a1b2c3d4)"/>
+<span id="status">auto-refresh 5s</span>
+</div>
+</header>
+<main>
+<div class="col red"><h2>RED — ejecucion y grafo</h2><pre id="red">sin datos</pre></div>
+<div class="col blue"><h2>BLUE — alertas e incidentes</h2><pre id="blue">sin datos</pre></div>
+<div class="col purple"><h2>PURPLE — cobertura ATT&CK</h2><pre id="purple">sin datos</pre></div>
+</main>
+<script>
+const sidInput=document.getElementById('sid');
+const redEl=document.getElementById('red');
+const blueEl=document.getElementById('blue');
+const purpleEl=document.getElementById('purple');
+const statusEl=document.getElementById('status');
+function getSid(){return sidInput.value.trim()|| new URLSearchParams(location.search).get('session_id')|| new URLSearchParams(location.search).get('sid')|| ''}
+async function fetchJSON(p){try{const r=await fetch(p);if(!r.ok) return {error: r.status+' '+r.statusText};return await r.json()}catch(e){return {error: String(e)}}}
+async function refresh(){
+  const sid=getSid();
+  if(!sid){redEl.textContent='ingresa session_id arriba o ?session_id=xxx';blueEl.textContent='';purpleEl.textContent='';return}
+  const metrics=await fetchJSON(`/sessions/${sid}/metrics`);
+  const coverage=await fetchJSON(`/sessions/${sid}/coverage`);
+  const alerts=await fetchJSON(`/sessions/${sid}/alerts`);
+  const results=await fetchJSON(`/sessions/${sid}/results`);
+  redEl.textContent=JSON.stringify({metrics:metrics,results:(results||[]).slice(-3)},null,2);
+  blueEl.textContent=JSON.stringify({alerts:alerts,metrics:metrics.alerts||metrics},null,2);
+  purpleEl.textContent=JSON.stringify(coverage,null,2);
+  statusEl.textContent='actualizado '+new Date().toLocaleTimeString();
+}
+sidInput.addEventListener('change',refresh);
+setInterval(refresh,5000);
+refresh();
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+server:
+  host: 127.0.0.1        # direccion de escucha
+  port: 8000             # puerto de la API
+
+api:
+  token: ""              # si no vacio, exige Authorization: Bearer <token>
+                         # (o X-API-Key). El WebSocket lo pasa como ?token=
+                         # /health queda abierto para monitoreo.
+
+command_timeout: 60      # segundos maximos por comando ejecutado
+max_results_in_context: 15   # ultimos N resultados en el contexto
+
+storage:
+  enabled: false         # true = persistencia en SQLite (relacional, WAL)
+  path: mediator.db      # archivo de la base
+
+providers:
+  techniques: builtin    # builtin | http (motor EDR)
+  techniques_url: ""     # ej: http://edr.local:9000
+  techniques_api_key: "" # token opcional (Authorization: Bearer)
+  scanner: yara          # yara | http (motor EDR)
+  scanner_url: ""        # ej: http://edr.local:9000
+  scanner_api_key: ""
+  scanner_binary: yara   # binario para el scanner local
+
+llm:
+  base_url: ""           # ej: https://api.openai.com/v1 (API compatible)
+  api_key: ""
+  model: ""              # ej: gpt-4o-mini
+
+compaction:
+  min_results: 20        # resultados minimos antes de compactar
+
+assessment_priorities:   # palabras clave del planner (valor esperado)
+  - authentication
+  - authorization
+  - input
+  - business
+  - identity
+  - privilege
+  - secrets
+  - iam
+  - trust
+  - segmentation
+
+allowed_hosts: []        # si no vacio, SOLO estos hosts son validos
+
+denied_prefixes:         # comandos siempre bloqueados (aunque sea "lab")
+  - "rm -rf /"
+  - "shutdown"
+  - "format "
+  - "del /s /q c:\\"
+
+scope:
+  deny_evasions: true    # bloquea subshells, wrappers, encodings, path traversal,
+                         # redirecciones a rutas criticas y bypass de host (--resolve)
+  require_approval_patterns:   # comandos que exigen aprobacion humana explicita
+    - "shutdown"
+    - "reboot"
+    - "poweroff"
+    - "dd if="
+    - "mkfs"
+    - "fdisk"
+    - "iptables"
+    - "git push --force"
+
+executor:
+  sandbox: none          # none | docker (aislamiento real: red bloqueada, RAM/CPU limitadas)
+  sandbox_image: alpine  # imagen para el sandbox
+
+graph:
+  node_ttl_hours: 168    # TTL de nodos sin verificar (7 dias); 0 = sin TTL
+  max_nodes_per_kind: 500  # tope por kind (degradacion del grafo)
+  prune_min_confidence: 0.5  # por debajo de esta confianza + TTL vencido = poda
+
+session_budget_steps: null  # limite de pasos por sesion (null = ilimitado)
+
+detection:
+  dedup_window_seconds: 300    # ventana para reutilizar una alerta abierta (misma regla+host)
+  max_alerts: null             # tope de alertas por sesion (null = ilimitado)
+  burst_window_seconds: 60     # ventana de la deteccion de rafagas (beaconing/escaneo)
+  burst_threshold: 10          # N eventos del mismo host/fuente en la ventana = alerta SIGMA-BURST
+  auto_register_nodes: true    # registra hosts/ips de telemetria en el grafo de conocimiento
+
+debrief:
+  # Directorio de reglas de SentryGuard (EDR) para nombrar, en el debrief,
+  # cual regla conocida disparo cada deteccion. Vacio = no usa el indice.
+  sentryguard_rules_dir: "../SentryGuard/src/SentryGuard.Rules/Rules/JSON"
+
+sentryguard:
+  url: ""              # ej: http://sentryguard.local:9000
+  timeout: 10          # segundos para GET /api/events
+  poll_interval: 5     # segundos entre polls
+  enabled: false       # true = polling activo
+  rules_dir: "../SentryGuard/src/SentryGuard.Rules/Rules/JSON"

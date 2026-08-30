@@ -75,3 +75,21 @@ def ingest_c2_event(session_id: str, c2_event: dict, mediator=None) -> dict:
         return result.model_dump(mode="json") if hasattr(result, "model_dump") else {"source": "c2dect", "stdout": adapted["stdout"]}
     except Exception as exc:
         return {"error": str(exc), "source": "c2dect", "stdout": adapted["stdout"]}
+
+
+def sync_weaponization(mediator_url: str, job: dict, intel: dict) -> dict:
+    import requests as _req
+    sha = job.get("sha256") or intel.get("sha256", "")[:64]
+    if not sha:
+        return {"error": "sin sha256"}
+    payload = {"title": f"0-Day {job.get('target','')[-30:]}", "technique_id": "T1203", "sha256": sha, "confidence": 0.9, "evidence": {"job_id": job.get("id"), "sha256": sha, "feasibility": intel.get("feasibility", {}).get("feasibility_score")}}
+    try:
+        existing = _req.get(f"{mediator_url}/api/findings", params={"sha256": sha}, timeout=5).json()
+        if isinstance(existing, dict) and existing.get("findings"):
+            fid = existing["findings"][0].get("id")
+            r = _req.patch(f"{mediator_url}/api/findings/{fid}", json=payload, timeout=5)
+            return {"action": "updated", "id": fid, "status": r.status_code}
+        r = _req.post(f"{mediator_url}/api/finding-add", json={"session_id": job.get("session_id", ""), **payload}, timeout=5)
+        return {"action": "created", "status": r.status_code, "resp": r.text[:500]}
+    except Exception as e:
+        return {"error": str(e)[:500]}

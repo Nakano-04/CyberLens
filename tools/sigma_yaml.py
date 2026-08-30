@@ -4,6 +4,30 @@ import json
 import os
 
 
+def generate_sigma_from_exploit(exploit: dict, sha256: str) -> str:
+    import datetime as _dt
+    name = exploit.get("name", "0-Day")
+    vuln = exploit.get("vuln_type", exploit.get("classification", "unknown"))
+    return f"""title: 0-Day {name} sha {sha256[:8]}
+id: {sha256}
+status: stable
+description: Detecta explotacion {vuln} weaponizada sha {sha256}
+author: c2-dect/weaponize
+date: {_dt.datetime.utcnow().isoformat()}
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains: '{sha256[:8]}'
+  condition: selection
+level: critical
+tags:
+  - attack.t1203
+  - attack.exploitation
+"""
+
+
 def load_sigma_yaml(path: str) -> list[dict]:
     """Carga YAML SIGMA -> list[RuleCreate dicts] (name, pattern_stdout, severity, technique_id)."""
     if not path or not os.path.exists(path):

@@ -413,8 +413,10 @@ Contacte al equipo comercial para cotización y evaluación técnica.
   orígenes en la ventana de deduplicación.
 - **Multi-tenant básico**: tokens por cliente y aislamiento de sesiones.
 
-### T2 · v0.6 — Respuesta y contexto
+### T2 · v0.6 — Respuesta y contexto **(actual v0.6.0 weapon real)**
 
+- **Variant publish ELITE**: `tools/variant_publish.py` `upsert` por `sha256` con `parent_primitive`, `variant_metadata` `xor_key/spray`, `sigma_mapping` `T1210/T1203`, `evasion_score` y `status ELITE` para `C2 /api/variants/list` 5 recientes y `feedback` `rop_offset +0x10` → `B4`.
+- **C2DECT adapter upsert**: `providers/c2dect_adapter.py` `sync_weaponization` con `sha256` `upsert` `findings` y `sigma` estable `id` fijo, 4 tests `v0.6.0` `106 passed`.
 - **Playbooks de respuesta con aprobación humana**: pasos sugeridos por incidente,
   ejecución delegada a SentryGuard/EDR con doble firma y auditoría completa.
 - **Threat intel**: consumo de feeds STIX/TAXII y MISP; enriquecimiento de IOCs.

@@ -2,9 +2,9 @@
 
 La plataforma de operaciones cibernéticas que une red team, blue team y orquestación en un solo motor.
 
-**Una solución de [MercenaryCorp Inc.](https://github.com/MercenaryCorp)** · Cybersecurity & Digital Defense
+**Una solución de [MercenaryCorp Inc.](https://github.com/Nakano-04)** · Cybersecurity & Digital Defense
 
-CyberLens es el motor de contexto del ecosistema **MercenaryCorp**: convierte cada
+CyberLens es el motor de contexto: convierte cada
 ejercicio de seguridad en una **medición auditable de cobertura**. Los equipos rojos emulan
 el ataque (apoyados por el framework de comando y control **C2-DECT**), los equipos
 azules detectan en tiempo real (con la telemetría del EDR **SentryGuard**) y la
@@ -459,9 +459,6 @@ Contacte al equipo comercial para cotización y evaluación técnica.
 ## Contacto
 
 - **MercenaryCorp Inc.** — Cybersecurity & Digital Defense
-- Ventas y evaluación técnica: ventas@mercenarycorp.com
-- Soporte e incidencias: soporte@mercenarycorp.com
-- Sitio web: www.mercenarycorp.com
 
 ---
 

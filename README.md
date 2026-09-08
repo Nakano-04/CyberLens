@@ -378,14 +378,7 @@ Principios de diseño:
 
 ## Licenciamiento
 
-Los productos **MercenaryCorp Inc.** se distribuyen bajo licencia comercial.
-
-- **CyberLens Core** — despliegue en un equipo, uso en laboratorio.
-- **CyberLens Enterprise** — conectores C2-DECT/SentryGuard/EDR, multi-tenant, soporte
-  prioritario y roadmap de integraciones a medida.
-- **CyberLens Managed** — plataforma operada por MercenaryCorp.
-
-Contacte al equipo comercial para cotización y evaluación técnica.
+Licencia MIT — ver `LICENSE`.
 
 ---
 

@@ -458,3 +458,13 @@ Licencia MIT — ver `LICENSE`.
 > CyberLens · Producto de MercenaryCorp Inc. · Se conecta con C2-DECT (framework C2) y
 > SentryGuard (EDR). MITRE ATT&CK® y MITRE ATLAS™ son marcas registradas de The MITRE
 > Corporation; este producto no está afiliado ni avalado por MITRE.
+
+## Integracion con el motor c2-dect (bridge de trazabilidad)
+
+El engine publica cada weaponizado (`weaponize._bridge_cyberlens`), solo LAB:
+
+- `POST /targets {host, description, assessment}` -> `{id|target_id}`.
+- `POST /sessions {target_id, objective, agent, team}` -> `{id|session_id}`.
+- `POST /sessions/{sid}/notes {note}` (sha, fortify, sin datos sensibles).
+- Env `CYBERLENS_URL` (default `http://127.0.0.1:8000`); preflight `GET /health`.
+- Opcional: si no responde, el publish sigue sin `cyberlens` (skip silencioso).

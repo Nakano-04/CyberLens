@@ -61,3 +61,10 @@ canales de C2-DECT y ser detectados (o no) por SentryGuard. El ciclo completo:
 ---
 
 Contacto: ventas@mercenarycorp.com · www.mercenarycorp.com
+
+## Bridge del motor de exploits (c2-dect/exploits/exploit-engine)
+
+Ademas del ciclo C2 clasico, el motor de exploits de c2-dect registra cada
+publish via `_bridge_cyberlens` (contrato en `CyberLens/README.md`, seccion
+de integracion). Sin CyberLens el motor sigue (modo lab-honesto); con el,
+cada `mutador_*` queda auditado como sesion red-team.

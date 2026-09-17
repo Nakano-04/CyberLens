@@ -465,6 +465,7 @@ El engine publica cada weaponizado (`weaponize._bridge_cyberlens`), solo LAB:
 
 - `POST /targets {host, description, assessment}` -> `{id|target_id}`.
 - `POST /sessions {target_id, objective, agent, team}` -> `{id|session_id}`.
-- `POST /sessions/{sid}/notes {note}` (sha, fortify, sin datos sensibles).
+- `POST /sessions/{sid}/notes {note}` (sha, fortify, **leak (`leak_type`/confianza)**, **bypass (`jop_coop.best` + `evasion_score`)**, sin datos sensibles).
 - Env `CYBERLENS_URL` (default `http://127.0.0.1:8000`); preflight `GET /health`.
 - Opcional: si no responde, el publish sigue sin `cyberlens` (skip silencioso).
+- **F26**: el intel `revforge zero_day_intel.leak` + `strike /api/exploit/jop` alimenta el debriefing por kill-chain (paso leak-first → bypass CET/CFG) y la matriz de cobertura.

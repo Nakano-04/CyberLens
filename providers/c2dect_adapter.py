@@ -78,18 +78,38 @@ def ingest_c2_event(session_id: str, c2_event: dict, mediator=None) -> dict:
 
 
 def sync_weaponization(mediator_url: str, job: dict, intel: dict) -> dict:
+    """Registra un job weaponize como Finding estructurado en una sesión.
+
+    Rutas reales: POST /sessions/{sid}/findings (FindingCreate).
+    Requiere job["session_id"] (crear sesión primero vía POST /sessions).
+    """
     import requests as _req
-    sha = job.get("sha256") or intel.get("sha256", "")[:64]
+    sha = str(job.get("sha256") or intel.get("sha256", "") or "")[:64]
+    sid = str(job.get("session_id") or "")
+    if not sid:
+        return {"error": "sin session_id: crear sesión primero (POST /sessions)"}
     if not sha:
         return {"error": "sin sha256"}
-    payload = {"title": f"0-Day {job.get('target','')[-30:]}", "technique_id": "T1203", "sha256": sha, "confidence": 0.9, "evidence": {"job_id": job.get("id"), "sha256": sha, "feasibility": intel.get("feasibility", {}).get("feasibility_score")}}
+    feas = intel.get("feasibility", {}) if isinstance(intel.get("feasibility"), dict) else {}
+    vuln = intel.get("vuln", {}) if isinstance(intel.get("vuln"), dict) else {}
+    funcs = vuln.get("funciones_peligrosas", []) if isinstance(vuln, dict) else []
+    fam = str(funcs[0].get("familia", "")) if funcs and isinstance(funcs[0], dict) else ""
+    technique_id = "T1203"
+    for key, tid in _TECHNIQUE_MAP.items():
+        if key.lower() in fam.lower():
+            technique_id = tid
+            break
+    payload = {
+        "title": f"0-Day {str(job.get('target', ''))[-30:]}",
+        "detail": f"sha={sha[:16]} fortify={(intel.get('fortify', {}) or {}).get('puntaje', '?')}/100 leak={feas.get('leak_type', '')}",
+        "technique_id": technique_id,
+        "confidence": 0.9,
+        "evidence_ids": [sha[:16]],
+    }
     try:
-        existing = _req.get(f"{mediator_url}/api/findings", params={"sha256": sha}, timeout=5).json()
-        if isinstance(existing, dict) and existing.get("findings"):
-            fid = existing["findings"][0].get("id")
-            r = _req.patch(f"{mediator_url}/api/findings/{fid}", json=payload, timeout=5)
-            return {"action": "updated", "id": fid, "status": r.status_code}
-        r = _req.post(f"{mediator_url}/api/finding-add", json={"session_id": job.get("session_id", ""), **payload}, timeout=5)
-        return {"action": "created", "status": r.status_code, "resp": r.text[:500]}
+        r = _req.post(f"{mediator_url}/sessions/{sid}/findings", json=payload, timeout=5)
+        if r.status_code == 200:
+            return {"action": "created", "id": r.json().get("id"), "status": r.status_code}
+        return {"action": "failed", "status": r.status_code, "resp": r.text[:500]}
     except Exception as e:
         return {"error": str(e)[:500]}

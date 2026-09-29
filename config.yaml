@@ -11,7 +11,7 @@ command_timeout: 60      # segundos maximos por comando ejecutado
 max_results_in_context: 15   # ultimos N resultados en el contexto
 
 storage:
-  enabled: false         # true = persistencia en SQLite (relacional, WAL)
+  enabled: true         # true = persistencia en SQLite (relacional, WAL)
   path: mediator.db      # archivo de la base
 
 providers:
@@ -65,7 +65,7 @@ scope:
     - "git push --force"
 
 executor:
-  sandbox: none          # none | docker (aislamiento real: red bloqueada, RAM/CPU limitadas)
+  sandbox: docker          # none | docker (aislamiento real: red bloqueada, RAM/CPU limitadas)
   sandbox_image: alpine  # imagen para el sandbox
 
 graph:

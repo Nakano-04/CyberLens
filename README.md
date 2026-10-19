@@ -6,7 +6,7 @@ La plataforma de operaciones cibernéticas que une red team, blue team y orquest
 
 CyberLens es el motor de contexto: convierte cada
 ejercicio de seguridad en una **medición auditable de cobertura**. Los equipos rojos emulan
-el ataque (apoyados por el framework de comando y control **C2-DECT**), los equipos
+el ataque (con la plataforma de simulación de adversarios **C2-DECT**), los equipos
 azules detectan en tiempo real (con la telemetría del EDR **SentryGuard**) y la
 orquestación purple calcula, a partir de las técnicas probadas en el ejercicio, cuáles
 se detectan, cuáles no, y qué falta para cerrar la brecha.
@@ -47,15 +47,15 @@ en un solo ciclo medible:
 
 | Producto | Rol |
 |----------|-----|
-| **[C2-DECT](C2-DECT.md)** | Framework de comando y control (C2) para operaciones ofensivas: canales, agentes y orquestación de comunicaciones |
+| **[C2-DECT](C2-DECT.md)** | Plataforma de simulación de adversarios: de la entrada inicial a la explotación y el beaconing. Canales, agentes y orquestación de comunicaciones |
 | **[SentryGuard](SentryGuard.md)** | EDR: detección y respuesta en endpoints, telemetría continua y acciones aprobadas |
 | **CyberLens** | Motor de operaciones y cobertura: une red, blue y purple con matriz MITRE auditable |
 | **[ExploitStrike](https://github.com/Nakano-04/ExploitStrike)** | Amplificador de desarrollo de exploits para el ecosistema: automatiza el desarrollo y la validación de exploits que operan sobre C2-DECT y se detectan con SentryGuard |
 
 ```
- ExploitStrike ──▶ desarrolla exploits ──▶ C2-DECT (framework C2)
-                                              │  operación ofensiva
-                                              ▼
+ ExploitStrike ──▶ desarrolla exploits ──▶ C2-DECT (plataforma de simulación)
+                                               │  emulación de la cadena
+                                               ▼
                                         CyberLens (red team)
                                               │  emulación
                                               ▼

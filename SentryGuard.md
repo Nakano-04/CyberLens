@@ -14,7 +14,7 @@ respuestas sobre la infraestructura.
 | Producto | Rol |
 |----------|-----|
 | **ExploitStrike** | Amplificador de desarrollo de exploits (operan sobre C2-DECT, se detectan con SentryGuard) |
-| **C2-DECT** | Framework de comando y control: los agentes que SentryGuard observa en los endpoints |
+| **C2-DECT** | Plataforma de simulación de adversarios: los agentes que SentryGuard observa en los endpoints |
 | **CyberLens** | Motor de operaciones y cobertura: consume la telemetría de SentryGuard |
 | **SentryGuard** | EDR: detección y respuesta en endpoints |
 

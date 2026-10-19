@@ -587,7 +587,7 @@ class DebriefEngine:
             ]
             sections.append(
                 {
-                    "title": f"{step['step_id']} — {step['label']}",
+                    "title": f"{step['step_id']} - {step['label']}",
                     "lines": lines,
                     "rows": event_rows,
                 }

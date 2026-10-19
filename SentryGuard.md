@@ -4,7 +4,7 @@
 
 SentryGuard es el **EDR (Endpoint Detection and Response)** del ecosistema
 **MercenaryCorp Inc.** (**Cybersecurity & Digital Defense**): monitoriza los endpoints,
-genera telemetría continua, mantiene reglas de detección y — con aprobación — ejecuta
+genera telemetría continua, mantiene reglas de detección y - con aprobación - ejecuta
 respuestas sobre la infraestructura.
 
 ---

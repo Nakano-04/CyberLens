@@ -39,7 +39,7 @@ ExploitStrike (desarrollo de exploits)
 |-------|-----------|---------|
 | **Operación** | C2-DECT → CyberLens | Los canales y agentes activos durante el ejercicio se registran como nodos y evidencia del red team |
 | **Validación** | CyberLens → C2-DECT | Cada fase del ejercicio puede desplegar o validar comandos a través de los canales disponibles |
-| **Cobertura** | Bidireccional | Lo que C2-DECT alcanza se contrasta con lo que SentryGuard detecta — la medición de cobertura de CyberLens |
+| **Cobertura** | Bidireccional | Lo que C2-DECT alcanza se contrasta con lo que SentryGuard detecta - la medición de cobertura de CyberLens |
 
 Beneficios del despliegue conjunto: operación ofensiva real, evidencia trazable de cada
 canal, y detección medida contra la misma infraestructura.

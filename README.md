@@ -77,7 +77,7 @@ CyberLens es un **motor de contexto y cobertura**:
 - **Red team**: ejecución validada por scope, grafo de conocimiento, hipótesis con
   evidencia y reporte de evaluación.
 - **Blue team**: ingesta de telemetría (incl. SentryGuard), detección determinista,
-  alertas, incidentes, IOCs y recomendaciones — **sin ejecutar acciones**.
+  alertas, incidentes, IOCs y recomendaciones - **sin ejecutar acciones**.
 - **Purple team**: orquestación red+blue y **matriz de cobertura** ATT&CK/ATLAS con
   brechas accionables.
 
@@ -124,7 +124,7 @@ purple  plan → emulate → detect → coverage → improve
         └──────────▶ (emulate | report)         (orquestación y cobertura)
 ```
 
-### Red — operación ofensiva
+### Red - operación ofensiva
 
 - Ejecución de comandos validada por el motor de scope (hosts autorizados, denylist,
   bloqueo de evasiones, aprobación humana para comandos destructivos).
@@ -133,7 +133,7 @@ purple  plan → emulate → detect → coverage → improve
   agente se registra como evidencia en el ejercicio.
 - Reporte de evaluación con hallazgos, evidencia, métricas y auditoría.
 
-### Blue — detección, sin acciones
+### Blue - detección, sin acciones
 
 - **No ejecuta comandos**: el ciclo de respuesta se documenta como recomendaciones
   auditables. La ejecución es responsabilidad del operador o del EDR conectado
@@ -143,19 +143,19 @@ purple  plan → emulate → detect → coverage → improve
 - Alertas con estados (`open → triaged → confirmed → false_positive / closed`),
   incidentes con ciclo de vida validado, IOCs y recomendaciones.
 
-### Purple — orquestación
+### Purple - orquestación
 
 - Enlaza sesiones red y blue existentes y calcula la **matriz de cobertura**:
   - `coverage`: % de técnicas del catálogo con al menos una regla de detección.
   - `detection_rate`: % de técnicas probadas por red que el blue detecta.
-  - `gaps`: técnicas emuladas sin regla — la lista de acciones concretas de mejora.
+  - `gaps`: técnicas emuladas sin regla - la lista de acciones concretas de mejora.
 - Reporte de ciclo: hallazgos validados, alertas abiertas, brechas pendientes.
 
 ---
 
 ## Motor de detección
 
-`core/detection.py` — detección determinista, rápida y sin falsos positivos por
+`core/detection.py` - detección determinista, rápida y sin falsos positivos por
 ruido de contexto:
 
 - **Regex precompiladas con caché**: cada patrón se compila una sola vez por proceso
@@ -165,7 +165,7 @@ ruido de contexto:
 - **Deduplicación por ventana**: una alerta abierta de la misma regla+host se
   reutiliza e incrementa `occurrences` en lugar de inundar el backlog.
 - **Detección de ráfagas**: N eventos del mismo host/fuente en una ventana
-  (configurable) generan la alerta `SIGMA-BURST` — beaconing y escaneo.
+  (configurable) generan la alerta `SIGMA-BURST` - beaconing y escaneo.
 - **Tope de alertas** por sesión (configurable) con auditoría de descarte.
 - **Catálogo base de 18 reglas SIGMA** (`knowledge/detection.py`) + reglas custom
   por sesión vía API.
@@ -188,7 +188,7 @@ Reglas incluidas (selección):
 
 ## Conocimiento MITRE ATT&CK v16 + ATLAS
 
-`knowledge/mitre.py` — catálogo de **46 técnicas**: 38 de **ATT&CK v16** (incluyendo
+`knowledge/mitre.py` - catálogo de **46 técnicas**: 38 de **ATT&CK v16** (incluyendo
 las incorporadas en la versión 16: T1556.009 abuso de Conditional Access,
 T1546.017 udev rules, T1496.004 LLMJacking, T1558.005 robo de tickets/ccache,
 T1213.005 mensajería, T1666, T1530, T1486, T1110, T1555, T1566, T1098, T1027,
@@ -222,7 +222,7 @@ CyberLens fue diseñado para operaciones reales con garantías de seguridad:
   exige que toda la evidencia citada respalde y que la evidencia en contra no contradiga);
   la confianza se ajusta según el resultado real de cada ejecución. Además expone un
   **contador operativo de higiene** (bloqueos, fallos, timeouts, evidencia ausente) que
-  señala procesos sucios — **no es un medidor de verdad**: un score bajo no garantiza
+  señala procesos sucios - **no es un medidor de verdad**: un score bajo no garantiza
   que el contenido sea correcto, solo que no hay señales operativas de proceso ensuciado.
 
 ---
@@ -256,7 +256,7 @@ Documentación interactiva en `/docs` con el servidor corriendo.
 
 ### WebSocket
 
-`/ws/sessions/{session_id}` — eventos en tiempo real: ejecuciones, fases, alertas,
+`/ws/sessions/{session_id}` - eventos en tiempo real: ejecuciones, fases, alertas,
 incidentes, cobertura. Ideal para dashboards y agentes.
 
 ### CLI
@@ -267,7 +267,7 @@ Más de 50 comandos: `session-create --team blue`, `blue-ingest`, `alerts`,
 
 ### Cliente Python
 
-`MediatorClient` — una librería para integrar CyberLens en herramientas propias o
+`MediatorClient` - una librería para integrar CyberLens en herramientas propias o
 aplicaciones de escritorio.
 
 ### MCP
@@ -286,8 +286,8 @@ con herramientas tipadas.
 - **Purple**: **tasa de detección** (probadas vs. detectadas), cobertura total,
   técnicas cubiertas, brechas abiertas, alertas abiertas, hallazgos validados.
 
-Todas las métricas son calculadas desde el estado persistido — sin estimaciones
-inventadas — y expuestas vía API y reportes.
+Todas las métricas son calculadas desde el estado persistido - sin estimaciones
+inventadas - y expuestas vía API y reportes.
 
 ---
 
@@ -296,7 +296,7 @@ inventadas — y expuestas vía API y reportes.
 - **SQLite relacional** con WAL: cada entidad tiene su tabla con índice por sesión;
   escrituras transaccionales; sin snapshots masivos.
 - **Auditoría completa**: cada acción registra actor, acción, veredicto
-  (aprobado / bloqueado / fallido) y detalle — trazabilidad de principio a fin.
+  (aprobado / bloqueado / fallido) y detalle - trazabilidad de principio a fin.
 - **Bus de eventos**: publica/inscribe para integración en tiempo real.
 
 ---
@@ -378,7 +378,7 @@ Principios de diseño:
 
 ## Licenciamiento
 
-Licencia MIT — ver `LICENSE`.
+Licencia MIT - ver `LICENSE`.
 
 ---
 
@@ -389,11 +389,11 @@ Licencia MIT — ver `LICENSE`.
 - Motor multi-equipo red/blue/purple completo.
 - Detección SIGMA + burst + deduplicación; catálogo ATT&CK v16 + ATLAS.
 - Matriz de cobertura, incidentes, IOCs, grafo, higiene de evidencia, scope.
-- **Debriefing por kill-chain**: consume `/sessions/{id}/alerts` y `/results`, correlaciona cada detección por paso del ciclo (acceso → LPE → credenciales → lateral…), emite el reporte «te detectaron en el paso X, por el evento Y, a los Z segundos» con técnicas MITRE (y las reglas de SentryGuard que dispararon), genera auto-sugerencias conexables y el seed de config inicial de la próxima campaña — cada ejercicio se convierte en datos de entrenamiento de la siguiente operación.
+- **Debriefing por kill-chain**: consume `/sessions/{id}/alerts` y `/results`, correlaciona cada detección por paso del ciclo (acceso → LPE → credenciales → lateral…), emite el reporte «te detectaron en el paso X, por el evento Y, a los Z segundos» con técnicas MITRE (y las reglas de SentryGuard que dispararon), genera auto-sugerencias conexables y el seed de config inicial de la próxima campaña - cada ejercicio se convierte en datos de entrenamiento de la siguiente operación.
 - API REST, WebSocket, CLI, cliente Python, MCP, persistencia SQLite, auditoría.
 - Conectores HTTP para EDR externo y base de integración con C2-DECT y SentryGuard.
 
-### Próximo (T1 · v0.5) — Conectividad y visibilidad
+### Próximo (T1 · v0.5) - Conectividad y visibilidad
 
 - **Conector nativo SentryGuard (EDR)**: ingesta push de eventos, reutilización de
   reglas y delegación de respuestas desde la API del EDR.
@@ -406,7 +406,7 @@ Licencia MIT — ver `LICENSE`.
   orígenes en la ventana de deduplicación.
 - **Multi-tenant básico**: tokens por cliente y aislamiento de sesiones.
 
-### T2 · v0.6 — Respuesta y contexto **(actual v0.6.0 weapon real)**
+### T2 · v0.6 - Respuesta y contexto **(actual v0.6.0 weapon real)**
 
 - **Variant publish ELITE**: `tools/variant_publish.py` `upsert` por `sha256` con `parent_primitive`, `variant_metadata` `xor_key/spray`, `sigma_mapping` `T1210/T1203`, `evasion_score` y `status ELITE` para `C2 /api/variants/list` 5 recientes y `feedback` `rop_offset +0x10` → `B4`.
 - **C2DECT adapter upsert**: `providers/c2dect_adapter.py` `sync_weaponization` con `sha256` `upsert` `findings` y `sigma` estable `id` fijo, 4 tests `v0.6.0` `106 passed`.
@@ -418,7 +418,7 @@ Licencia MIT — ver `LICENSE`.
 - **Exportación de resultados**: reportes ejecutivos en PDF y export de la matriz
   de cobertura a CACAO / formatos interoperables.
 
-### T3 · v0.7 — Despliegue industrial
+### T3 · v0.7 - Despliegue industrial
 
 - **Docker Compose y Helm Chart** para Kubernetes.
 - **Alta disponibilidad**: réplicas del motor, cola de eventos (Redis/MQ) y
@@ -426,7 +426,7 @@ Licencia MIT — ver `LICENSE`.
 - **Observabilidad**: métricas Prometheus, trazas OpenTelemetry y health checks.
 - **Gestión de catálogos**: difusión de reglas nuevas a flotas de sensores.
 
-### T4 · v1.0 — Plataforma
+### T4 · v1.0 - Plataforma
 
 - **Multi-tenant completo** con RBAC, SSO/SAML y cuotas por cliente.
 - **Reportes de cumplimiento** (RGPD, SOC 2) y evidencia de ejercicios.
@@ -451,7 +451,7 @@ Licencia MIT — ver `LICENSE`.
 
 ## Contacto
 
-- **MercenaryCorp Inc.** — Cybersecurity & Digital Defense
+- **MercenaryCorp Inc.** - Cybersecurity & Digital Defense
 
 ---
 
